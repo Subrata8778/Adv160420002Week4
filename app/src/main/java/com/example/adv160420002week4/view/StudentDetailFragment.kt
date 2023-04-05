@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.adv160420002week4.R
+import com.example.adv160420002week4.model.Student
+import com.example.adv160420002week4.util.loadImage
 import com.example.adv160420002week4.viewmodel.DetailViewModel
 import com.example.adv160420002week4.viewmodel.ListViewModel
 
@@ -24,8 +28,15 @@ class StudentDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var studentId = "";
+        if(arguments != null) {
+            studentId =
+                StudentDetailFragmentArgs.fromBundle(requireArguments()).studentId
+        }
+
         viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        viewModel.fetch()
+        viewModel.fetch(studentId)
         observeViewModel()
     }
     fun observeViewModel(){
@@ -34,11 +45,17 @@ class StudentDetailFragment : Fragment() {
             val txtName = view?.findViewById<TextView>(R.id.txtName)
             val txtBod = view?.findViewById<TextView>(R.id.txtBod)
             val txtPhone = view?.findViewById<TextView>(R.id.txtPhone)
+            val img = view?.findViewById<ImageView>(R.id.imageView2)
+            var progressBar2 = view?.findViewById<ProgressBar>(R.id.progressBar2)
 
             txtID?.text = viewModel.studentLD.value?.id
             txtName?.text = viewModel.studentLD.value?.name
-            txtBod?.text = viewModel.studentLD.value?.dob
+            txtBod?.text = viewModel.studentLD.value?.bod
             txtPhone?.text = viewModel.studentLD.value?.phone
+            if (progressBar2 != null) {
+                img?.loadImage(viewModel.studentLD.value?.photoUrl, progressBar2)
+            }
+
         })
     }
 }
