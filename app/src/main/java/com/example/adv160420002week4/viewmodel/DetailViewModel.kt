@@ -40,5 +40,4 @@ class DetailViewModel(application: Application): AndroidViewModel(application) {
         stringRequest.tag = TAG
         queue?.add(stringRequest)
     }
-
 }
